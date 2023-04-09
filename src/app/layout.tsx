@@ -20,7 +20,6 @@ export default function RootLayout({
             Products
           </div>
         </div>
-
         <h3 className="bg-slate-900 py-16 text-white font-bold text-3xl px-8">footer</h3>
       </body>
     </html>
