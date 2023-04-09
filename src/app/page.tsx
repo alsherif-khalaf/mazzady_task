@@ -4,7 +4,7 @@ import ClientOnly from "./components/ClientOnly";
 import { Category } from "./types/types";
 
 export default async function Home({
-  searchParams ,
+  searchParams,
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
@@ -26,36 +26,37 @@ export default async function Home({
     : null;
 
   return (
-    <main className="bg-slate-800 flex min-h-screen flex-col items-center justify-between py-16">
-      <div className="p-4 all_items md:w-[40vw] w-full min-h-[200px] bg-white rounded-xl">
-        <ClientOnly>
-          {/* Categories */}
-          <SearchableDropdownMenu
-            options={categories.data.categories}
-            placeholder="التصنيفات الرئيسية"
-            type="category"
-          />
+   
+      <div className="p-4 all_items w-full min-h-[200px] bg-white rounded-xl">
+          <ClientOnly>
+            <div className="flilters">
+              {/* Categories */}
+              <SearchableDropdownMenu
+                options={categories.data.categories}
+                placeholder="التصنيفات الرئيسية"
+                type="category"
+              />
+              {/* Sub Categories */}
+              <SearchableDropdownMenu
+                options={subCategory?.children}
+                placeholder="التصنيفات الفرعية"
+                type="subCategory"
+              />
 
-          {/* Sub Categories */}
-          <SearchableDropdownMenu
-            options={subCategory?.children}
-            placeholder="التصنيفات الفرعية"
-            type="subCategory"
-          />
+              {/* Properties */}
 
-          {/* Properties */}
-
-          {subCategoryProperties?.data.map((cat: any) => (
-            <SearchableDropdownMenu
-              key={cat.slug}
-              options={cat?.options}
-              placeholder={cat?.name}
-              type={cat?.slug}
-              multi
-            />
-          ))}
-        </ClientOnly>
+              {subCategoryProperties?.data.map((cat: any) => (
+                <SearchableDropdownMenu
+                  key={cat.slug}
+                  options={cat?.options}
+                  placeholder={cat?.name}
+                  type={cat?.slug}
+                  multi
+                />
+              ))}
+            </div>
+          </ClientOnly>
       </div>
-    </main>
+
   );
 }
