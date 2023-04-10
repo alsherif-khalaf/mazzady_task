@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 type OptionType = {
   label: string;
-  value: string;
+  value: string | null;
   isDisabled?: boolean;
 };
 
@@ -36,14 +36,25 @@ const SearchableDropdownMenu: React.FC<Props> = ({
       ? [
           {
             label: "لا يوجد",
-            value: "0",
+            value: null,
             isDisabled: true,
           },
         ]
-      : options.map((option: any) => ({
-          label: option.name,
-          value: option.id.toString(),
-        }));
+      : options.map((option: any) => {
+          return {
+            label: option.name,
+            value: option.id.toString(),
+          };
+        });
+
+  // Add the "other" option to the beginning of the array
+  // if (type !== "category") {
+  //   dropdownOptions.unshift({ label: "اخر", value: null });
+  // }
+
+  if (type !== "category" && type !== "subCategory" && type !== "model" && type !== "brand" ) {
+    dropdownOptions.unshift({ label: "اخر", value: null });
+  }
 
   useEffect(() => {
     const selectedValue = searchParams.get(type);

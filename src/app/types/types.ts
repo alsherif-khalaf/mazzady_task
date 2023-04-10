@@ -36,6 +36,6 @@ export interface Property {
 
 export interface DropdownOption  {
   label: string;
-  value: string;
+  value: string | null;
   isDisabled? : boolean
 };
