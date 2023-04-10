@@ -31,3 +31,16 @@ export const getAllCats = async () => {
       const jsonData = await response.json();
       return jsonData;
     }
+
+  export const getModels = async (brandID) => {
+      const response = await fetch(`https://staging.mazaady.com/api/v1/get-options-child/${brandID}`, {
+        headers: {
+          'private-key': thePrivateKey
+        }
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch categories");
+      }
+      const jsonData = await response.json();
+      return jsonData;
+    }

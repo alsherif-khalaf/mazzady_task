@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 type OptionType = {
   label: string;
   value: string;
-  isDisabled? : boolean
+  isDisabled?: boolean;
 };
 
 type Props = {
@@ -64,7 +64,13 @@ const SearchableDropdownMenu: React.FC<Props> = ({
   const handleChange = (
     newValue: MultiValue<OptionType> | SingleValue<OptionType>
   ) => {
+
+    console.log(newValue);
+    console.log(type);
+
+
     setSelected(newValue as OptionType | OptionType[] | null);
+
     if (type === "category") {
       console.log("category");
       const value = newValue as OptionType | null;
@@ -79,6 +85,16 @@ const SearchableDropdownMenu: React.FC<Props> = ({
       const categoryId = categoryQueryParam ? categoryQueryParam : "";
       router.push(`/?category=${categoryId}&subCategory=${subCategoryId}`);
     }
+
+    if (type === "brand") {
+      const value = newValue as OptionType | null;
+      const brandId = value ? value.value : "";
+      const categoryQueryParam = searchParams.get("category");
+      const subCategoryQueryParam = searchParams.get("subCategory");
+      const categoryId = categoryQueryParam ? categoryQueryParam : "";
+      router.push(`/?category=${categoryId}&subCategory=${subCategoryQueryParam}&brand=${brandId}`);
+    }
+
   };
 
   return (
