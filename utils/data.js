@@ -32,8 +32,8 @@ export const getAllCats = async () => {
       return jsonData;
     }
 
-  export const getModels = async (brandID) => {
-      const response = await fetch(`https://staging.mazaady.com/api/v1/get-options-child/${brandID}`, {
+  export const getOptionsChild = async (ID) => {
+      const response = await fetch(`https://staging.mazaady.com/api/v1/get-options-child/${ID}`, {
         headers: {
           'private-key': thePrivateKey
         }

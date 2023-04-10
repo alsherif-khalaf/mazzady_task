@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import Select, { ActionMeta, MultiValue, SingleValue } from "react-select";
+import Select, { MultiValue, SingleValue } from "react-select";
 import { DropdownOption } from "../types/types";
 import { useEffect, useState } from "react";
 
@@ -64,37 +64,36 @@ const SearchableDropdownMenu: React.FC<Props> = ({
   const handleChange = (
     newValue: MultiValue<OptionType> | SingleValue<OptionType>
   ) => {
-
     console.log(newValue);
     console.log(type);
 
-
     setSelected(newValue as OptionType | OptionType[] | null);
 
+    const categoryId = searchParams.get("category");
+    const subCategoryId = searchParams.get("subCategory");
+    const brandId = searchParams.get("brand");
+
     if (type === "category") {
-      console.log("category");
       const value = newValue as OptionType | null;
-      const id = value ? value.value : "";
+      const id = value?.value ?? "";
       router.push(`/?${type}=${id}`);
-    }
-
-    if (type === "subCategory") {
+    } else if (type === "subCategory") {
       const value = newValue as OptionType | null;
-      const subCategoryId = value ? value.value : "";
-      const categoryQueryParam = searchParams.get("category");
-      const categoryId = categoryQueryParam ? categoryQueryParam : "";
+      const subCategoryId = value?.value ?? "";
       router.push(`/?category=${categoryId}&subCategory=${subCategoryId}`);
-    }
-
-    if (type === "brand") {
+    } else if (type === "brand") {
       const value = newValue as OptionType | null;
-      const brandId = value ? value.value : "";
-      const categoryQueryParam = searchParams.get("category");
-      const subCategoryQueryParam = searchParams.get("subCategory");
-      const categoryId = categoryQueryParam ? categoryQueryParam : "";
-      router.push(`/?category=${categoryId}&subCategory=${subCategoryQueryParam}&brand=${brandId}`);
+      const brandId = value?.value ?? "";
+      router.push(
+        `/?category=${categoryId}&subCategory=${subCategoryId}&brand=${brandId}`
+      );
+    } else if (type === "model") {
+      const value = newValue as OptionType | null;
+      const modelId = value?.value ?? "";
+      router.push(
+        `/?category=${categoryId}&subCategory=${subCategoryId}&brand=${brandId}&model=${modelId}`
+      );
     }
-
   };
 
   return (
