@@ -5,7 +5,7 @@ import { Dropdown } from "../Dropdown";
 
 export default function HeaderSearch() {
   return (
-    <div className="w-full p-4 mx-auto max-w-7xl flex flex-col gap-4 md:flex-row  justify-between items-center">
+    <div className="w-full p-4 mx-auto md:max-w-[95vw] max-w-7xl flex flex-col gap-4 md:flex-row  justify-between items-center">
      
       <div className="search basis-3/4 order-1">
 

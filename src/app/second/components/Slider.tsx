@@ -75,8 +75,9 @@ const carImages = [
 
 export default function Slider() {
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-    initial: 0,
+    initial: 5,
     rtl: true,
+    
   });
 
   const [thumbnailRef] = useKeenSlider<HTMLDivElement>(
@@ -87,7 +88,7 @@ export default function Slider() {
       slides: {
         origin: "center",
         perView: 4,
-        spacing: 15,
+        spacing: 12,
       },
       vertical: true,
     },
@@ -95,7 +96,7 @@ export default function Slider() {
   );
 
   return (
-    <div className="flex" dir="ltr">
+    <div className="flex me-[-7vw]" dir="ltr">
       <div ref={sliderRef} className="keen-slider">
         {carImages.map((car) => (
           <div
@@ -114,7 +115,7 @@ export default function Slider() {
 
       <div
         ref={thumbnailRef}
-        className="keen-slider relative thumbnail vertical-slider h-full max-w-[10%] mx-2"
+        className="keen-slider relative thumbnail vertical-slider h-full max-w-[7vw] ps-4 "
         style={{ height: 400 }}
       >
         

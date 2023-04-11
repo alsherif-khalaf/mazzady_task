@@ -30,12 +30,12 @@ export default function Header() {
     <>
       <HeaderSearch />
       <header className="w-full  bg-gradient-to-r from-pink to-dark_pink  ">
-        <div className="content_w w-full p-4 mx-auto max-w-7xl flex justify-between ">
+        <div className="content_w w-full px-4 py-6 mx-auto md:max-w-[95vw] max-w-7xl flex justify-between ">
           <ul className="menu-items">
             {menuItems.map((item, index) => (
               <li
                 key={index}
-                className="inline-block mx-2 text-white hover:text-dark_yellow duration-300 transition-all cursor-pointer"
+                className="inline-block mx-4 text-xl text-white hover:text-dark_yellow duration-300 transition-all cursor-pointer"
               >
                 {item.name}
               </li>

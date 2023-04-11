@@ -14,7 +14,7 @@ export default function RootLayout({
         <ClientOnly>
           <Header />
         </ClientOnly>
-        <div className="mx-auto w-full max-w-7xl p-4">{children}</div>
+        <div className="">{children}</div>
       </div>
   );
 }
