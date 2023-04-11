@@ -1,15 +1,9 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import Select, { MultiValue, SingleValue } from "react-select";
-import { DropdownOption } from "../types/types";
-import { useEffect, useState } from "react";
-
-type OptionType = {
-  label: string;
-  value: string | null;
-  isDisabled?: boolean;
-};
+import { DropdownOption, OptionType } from "../../types/types";
+import React, {  useEffect, useState , useMemo } from "react";
 
 type Props = {
   options: any[];
@@ -25,6 +19,7 @@ const SearchableDropdownMenu: React.FC<Props> = ({
   multi = false,
 }) => {
   const router = useRouter();
+  const path = usePathname();
   const searchParams = useSearchParams();
   const [selected, setSelected] = useState<OptionType | OptionType[] | null>(
     null
@@ -52,7 +47,12 @@ const SearchableDropdownMenu: React.FC<Props> = ({
   //   dropdownOptions.unshift({ label: "اخر", value: null });
   // }
 
-  if (type !== "category" && type !== "subCategory" && type !== "model" && type !== "brand" ) {
+  if (
+    type !== "category" &&
+    type !== "subCategory" &&
+    type !== "model" &&
+    type !== "brand"
+  ) {
     dropdownOptions.unshift({ label: "اخر", value: null });
   }
 
@@ -87,22 +87,24 @@ const SearchableDropdownMenu: React.FC<Props> = ({
     if (type === "category") {
       const value = newValue as OptionType | null;
       const id = value?.value ?? "";
-      router.push(`/?${type}=${id}`);
+      router.push(`${path}?${type}=${id}`);
     } else if (type === "subCategory") {
       const value = newValue as OptionType | null;
       const subCategoryId = value?.value ?? "";
-      router.push(`/?category=${categoryId}&subCategory=${subCategoryId}`);
+      router.push(
+        `${path}?category=${categoryId}&subCategory=${subCategoryId}`
+      );
     } else if (type === "brand") {
       const value = newValue as OptionType | null;
       const brandId = value?.value ?? "";
       router.push(
-        `/?category=${categoryId}&subCategory=${subCategoryId}&brand=${brandId}`
+        `${path}?category=${categoryId}&subCategory=${subCategoryId}&brand=${brandId}`
       );
     } else if (type === "model") {
       const value = newValue as OptionType | null;
       const modelId = value?.value ?? "";
       router.push(
-        `/?category=${categoryId}&subCategory=${subCategoryId}&brand=${brandId}&model=${modelId}`
+        `${path}?category=${categoryId}&subCategory=${subCategoryId}&brand=${brandId}&model=${modelId}`
       );
     }
   };
@@ -110,17 +112,17 @@ const SearchableDropdownMenu: React.FC<Props> = ({
   return (
     <div className="my-4">
       <p className="pb-2 font-bold text-sm">{placeholder}</p>
-
-      <Select
-        options={dropdownOptions}
-        onChange={handleChange}
-        placeholder={`اختر من  ${placeholder}`}
-        isClearable
-        isMulti={multi}
-        value={selected}
-      />
+        <Select
+          options={dropdownOptions}
+          onChange={handleChange}
+          placeholder={`اختر من  ${placeholder}`}
+          isClearable
+          isMulti={multi}
+          value={selected}
+        />
     </div>
   );
 };
 
-export default SearchableDropdownMenu;
+export default React.memo(SearchableDropdownMenu);
+// export default SearchableDropdownMenu;

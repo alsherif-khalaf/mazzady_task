@@ -7,6 +7,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        'light_pink': '#FBE7EE',
+        'pink': '#D20653',
+        'dark_pink': '#A1033F',
+        'dark_yellow': '#FDBC01',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -14,5 +20,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwindcss-rtl'),
+  ],
 }

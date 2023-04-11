@@ -34,8 +34,14 @@ export interface Property {
 }
 
 
-export interface DropdownOption  {
+ export interface DropdownOption  {
   label: string;
   value: string | null;
   isDisabled? : boolean
+};
+
+export interface OptionType  {
+  label: string;
+  value: string | null;
+  isDisabled?: boolean;
 };

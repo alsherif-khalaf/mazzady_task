@@ -5,6 +5,11 @@
 
 const thePrivateKey = '3%o8i}_;3D4bF]G5@22r2)Et1&mLJ4?$@+16'
 
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
 export const getAllCats = async () => {
     const response = await fetch('https://staging.mazaady.com/api/v1/get_all_cats', {
       headers: {
@@ -15,6 +20,7 @@ export const getAllCats = async () => {
       throw new Error("Failed to fetch categories");
     }
     const jsonData = await response.json();
+
     return jsonData;
   }
 
@@ -29,6 +35,7 @@ export const getAllCats = async () => {
         throw new Error("Failed to fetch categories");
       }
       const jsonData = await response.json();
+      // await timeout(3000); // wait for 3 seconds
       return jsonData;
     }
 

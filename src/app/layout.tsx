@@ -1,4 +1,9 @@
 import "./globals.css";
+import { Inter, Tajawal } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin'] })
+const tajawal = Tajawal({ weight: ['300', '400', '500', '700', '800'], subsets: ['arabic'] })
+
 
 export const metadata = {
   title: "Mazzady App",
@@ -11,17 +16,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ar" dir="rtl">
-      <body>
-        <h3 className="bg-slate-900 py-16  text-white  font-bold text-3xl px-8">Header</h3>
+    <html lang="ar" dir="rtl" className={`${tajawal.className} `} >
+      <body  >
+        <div className="">{children}</div>
+      </body>
+    </html>
+  );
+}
+
+{
+  /* <h3 className="bg-slate-900 py-16  text-white  font-bold text-3xl px-8">Header</h3>
         <div className="md:flex gap-8 p-8 ">
           <div className="md:min-w-[35vw]">{children}</div>
           <div className=" rounded-2xl prodcuts flex-1 min-h-screen bg-slate-500 p-8">
             Products
           </div>
         </div>
-        <h3 className="bg-slate-900 py-16 text-white font-bold text-3xl px-8">footer</h3>
-      </body>
-    </html>
-  );
+        <h3 className="bg-slate-900 py-16 text-white font-bold text-3xl px-8">footer</h3> */
 }
