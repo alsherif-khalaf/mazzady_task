@@ -2,30 +2,35 @@ import Competitors from "./Competitors";
 
 const competitors = [
   {
+    key: 1,
     name: "علي الجاسم",
     number: +20,
     src: "https://randomuser.me/api/portraits/men/30.jpg",
     time : '15:14:51'
   },
   {
+    key:2,
     name: "أحمد العلي",
     number: +24,
     src: "https://randomuser.me/api/portraits/men/31.jpg",
     time : '15:14:51'
   },
   {
+    key:3,
     name: "محمد السيد",
     number: +10,
     src: "https://randomuser.me/api/portraits/men/32.jpg",
     time : '15:14:51'
   },
   {
+    key:4,
     name: "عبدالرحمن العبدالله",
     number: +25,
     src: "https://randomuser.me/api/portraits/men/33.jpg",
     time : '15:14:51'
   },
   {
+    key:5,
     name: "سلمان الغامدي",
     number: +30,
     src: "https://randomuser.me/api/portraits/men/34.jpg",
@@ -74,6 +79,7 @@ export const Sidebar = () => {
         <div className="competitors_list space-y-4 mt-4">
           {competitors.map((competitor) => (
             <Competitors
+              key={competitor.key}
               name={competitor.name}
               number={competitor.number}
               src={competitor.src}
@@ -86,4 +92,4 @@ export const Sidebar = () => {
   );
 };
 
-// images for avatar real persons  https://randomuser.me/photos
+
