@@ -92,6 +92,7 @@ export default async function Home({
         <button className="w-full my-4 bg-black text-white  font-light py-4 px-6 ">
           بحـث
         </button>
+        
       </ClientOnly>
     </div>
   );

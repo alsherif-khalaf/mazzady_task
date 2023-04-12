@@ -3,7 +3,8 @@
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import Select, { MultiValue, SingleValue } from "react-select";
 import { DropdownOption, OptionType } from "../../types/types";
-import React, {  useEffect, useState , useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
+import CreatableSelect from "react-select/creatable";
 
 type Props = {
   options: any[];
@@ -24,6 +25,7 @@ const SearchableDropdownMenu: React.FC<Props> = ({
   const [selected, setSelected] = useState<OptionType | OptionType[] | null>(
     null
   );
+  const [isMulti , setIsMulti] = useState(multi)
 
   // Convert options to dropdown options
   const dropdownOptions: DropdownOption[] =
@@ -71,11 +73,41 @@ const SearchableDropdownMenu: React.FC<Props> = ({
     }
   }, [searchParams, type, options]);
 
+  // function handleInputChange to useState to make a new message when user choose "other"
+
   // Handle dropdown menu change
   const handleChange = (
     newValue: MultiValue<OptionType> | SingleValue<OptionType>
   ) => {
-    console.log(newValue);
+    const theValue = newValue as OptionType | OptionType[] | null;
+
+    console.log("theValue", theValue);
+
+    let theValueOther = "";
+
+    if (Array.isArray(theValue)) {
+      // If `theValue` is an array
+      theValueOther = theValue[0]?.value ?? "";
+      console.log(!theValueOther);
+      if (!theValueOther) {
+        setOtherOption(true);
+      } else {
+        setOtherOption(false);
+      }
+    } else if (typeof theValue === "object" && theValue !== null) {
+      // If `theValue` is an object
+      const option = theValue as OptionType;
+      theValueOther = option?.value ?? "";
+      console.log(!theValueOther);
+      if (!theValueOther) {
+        setOtherOption(true);
+      } else {
+        setOtherOption(false);
+      }
+    }
+
+    // if newValue equal to "other" then show input to add new value
+
     console.log(type);
 
     setSelected(newValue as OptionType | OptionType[] | null);
@@ -109,20 +141,45 @@ const SearchableDropdownMenu: React.FC<Props> = ({
     }
   };
 
+  const [otherOption, setOtherOption] = useState(false);
+
+  const handleOtherChange = (
+    newValue: MultiValue<OptionType> | SingleValue<OptionType>
+  ) => {
+    console.log(newValue);
+    console.log(type);
+  };
+
   return (
     <div className="my-4">
       <p className="pb-2 font-bold text-sm">{placeholder}</p>
-        <Select
-          options={dropdownOptions}
-          onChange={handleChange}
-          placeholder={`اختر من  ${placeholder}`}
-          isClearable
-          isMulti={multi}
-          value={selected}
-        />
+      <Select
+        options={dropdownOptions}
+        onChange={handleChange}
+        placeholder={`اختر من  ${placeholder}`}
+        isClearable
+        isMulti={isMulti}
+        value={selected}
+        required
+      />
+
+      {otherOption && (
+        <div className="my-4">
+          <p className="pb-2 font-bold text-sm">إنشي {placeholder} جديد</p>
+          <CreatableSelect
+            onChange={handleOtherChange}
+            placeholder={` إنشي   ${placeholder} جديد`}
+            isClearable
+            isMulti={isMulti}
+            required
+          />
+        </div>
+      )}
     </div>
   );
 };
 
 export default React.memo(SearchableDropdownMenu);
 // export default SearchableDropdownMenu;
+
+//message if user choose other
