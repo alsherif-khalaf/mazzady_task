@@ -25,7 +25,7 @@ const SearchableDropdownMenu: React.FC<Props> = ({
   const [selected, setSelected] = useState<OptionType | OptionType[] | null>(
     null
   );
-  const [isMulti , setIsMulti] = useState(multi)
+  const [isMulti, setIsMulti] = useState(multi);
 
   // Convert options to dropdown options
   const dropdownOptions: DropdownOption[] =
@@ -154,24 +154,24 @@ const SearchableDropdownMenu: React.FC<Props> = ({
     <div className="my-4">
       <p className="pb-2 font-bold text-sm">{placeholder}</p>
       <Select
+        name={type}
         options={dropdownOptions}
         onChange={handleChange}
         placeholder={`اختر من  ${placeholder}`}
         isClearable
         isMulti={isMulti}
         value={selected}
-        required
       />
 
       {otherOption && (
         <div className="my-4">
           <p className="pb-2 font-bold text-sm">إنشي {placeholder} جديد</p>
           <CreatableSelect
+            name={type}
             onChange={handleOtherChange}
             placeholder={` إنشي   ${placeholder} جديد`}
             isClearable
             isMulti={isMulti}
-            required
           />
         </div>
       )}
