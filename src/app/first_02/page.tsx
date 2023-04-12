@@ -13,6 +13,7 @@ export default async function Home({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
+
   // Get The categories directly as this page is a server component
   const categories = await getAllCats();
 

@@ -35,7 +35,6 @@ export const getAllCats = async () => {
         throw new Error("Failed to fetch categories");
       }
       const jsonData = await response.json();
-      // await timeout(3000); // wait for 3 seconds
       return jsonData;
     }
 
