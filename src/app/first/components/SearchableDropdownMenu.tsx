@@ -153,6 +153,7 @@ const SearchableDropdownMenu: React.FC<Props> = ({
   return (
     <div className="my-4">
       <p className="pb-2 font-bold text-sm">{placeholder}</p>
+      
       <Select
         name={type}
         options={dropdownOptions}

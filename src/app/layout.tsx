@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir="rtl" className={`${tajawal.className} `} >
-      <body  >
+      <body id='mazzady'  >
         <div className="">{children}</div>
       </body>
     </html>
