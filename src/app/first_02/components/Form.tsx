@@ -57,7 +57,7 @@ const Form = ({ categories }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    
+
     // Update subCategories when categories change
     if (currentCategory === null) {
       setSubCategories(null);
@@ -66,11 +66,12 @@ const Form = ({ categories }: Props) => {
     }
 
     // Check if currentCategory is different from the previous one
+    
     if (
       prevCategoryRef.current &&
       prevCategoryRef.current.value !== currentCategory.value
     ) {
-      // Perform any actions you want when the category changes
+     
       setSubCategories(null);
       setIsLoading(true);
       console.log(
