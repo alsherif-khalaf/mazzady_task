@@ -1,9 +1,8 @@
 "use client";
 
 import Select from "react-select";
-import AsyncSelect from "react-select/async";
 import { Category, DropdownOption } from "@/app/types/types";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Spinner from "./Spinner";
 
 type Props = {
@@ -36,7 +35,7 @@ const convertOptionsToDropdownOptions = (options: any[]) => {
   return dropdownOptions;
 };
 
-// create function handle Form Submit  and pass it to the form onSubmit
+// create function handle Form Submit
 const handleFormSubmit = (e: any) => {
   e.preventDefault();
   const formData = new FormData(e.currentTarget);
@@ -44,48 +43,118 @@ const handleFormSubmit = (e: any) => {
 };
 
 const Form = ({ categories }: Props) => {
-  const [subCategories, setSubCategories] = useState<Category[]>([]);
+  const [subCategories, setSubCategories] = useState<Category[] | null>(null);
   const [subCategoryProperties, setSubCategoryProperties] = useState<
-    Category[]
-  >([]);
+    Category[] | null
+  >(null);
+  const [models, setModels] = useState<Category[] | null>(null);
+  const [currentCategory, setCurrentCategory] = useState<DropdownOption | null>(
+    null
+  );
+
+  const prevCategoryRef = useRef<DropdownOption | null>(null);
+
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    
+    // Update subCategories when categories change
+    if (currentCategory === null) {
+      setSubCategories(null);
+      setSubCategoryProperties(null);
+      return;
+    }
+
+    // Check if currentCategory is different from the previous one
+    if (
+      prevCategoryRef.current &&
+      prevCategoryRef.current.value !== currentCategory.value
+    ) {
+      // Perform any actions you want when the category changes
+      setSubCategories(null);
+      setIsLoading(true);
+      console.log(
+        "Category changed from",
+        prevCategoryRef.current,
+        "to",
+        currentCategory
+      );
+    }
+
+    // Save currentCategory as the new previous category
+    prevCategoryRef.current = currentCategory;
+  }, [currentCategory]);
 
   const getSubCategoryProperties = async (e: any) => {
     if (e?.value) {
       const Id = parseInt(e.value);
-      console.log(Id);
-      const res = await fetch(`/api/data?id=${Id}`, {
+      const res = await fetch(`/api/data?categoryId=${Id}`, {
         method: "GET",
       });
-      // console.log("res",await res.json());
-      const data = await res.json();
-      setSubCategoryProperties(await data.res.data);
+      const json = await res.json();
+      const data = await json.res.data;
+      setSubCategoryProperties(data);
       setIsLoading(false);
-      console.log("SubCategoryProperties", subCategoryProperties);
     }
   };
 
-  const handelChangeGetData = (e: any) => {
+  const handleSubCategoryPropertiesChange = async (e: any, type: string) => {
+
+    console.log(e, type);
     if (e === null) {
-      setSubCategories([]);
+      setIsLoading(false);
       return;
     }
+    if (type === "brand") {
+      const Id = parseInt(e.value);
+      console.log("brand", Id);
+      const res = await fetch(`/api/data?brandId=${Id}`, {
+        method: "GET",
+      });
+      const json = await res.json();
+      const data = json.res?.data;
+      console.log("proprties", data);
+    }
+  };
+
+  const handelCategoriesChange = (e: any) => {
+    setCurrentCategory(e);
+
+    if (e === null) {
+      setIsLoading(true);
+      setSubCategories(null);
+      setSubCategoryProperties(null);
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+      return;
+    }
+
+    setIsLoading(true);
+    setSubCategories(null);
+    setSubCategoryProperties(null);
+
     const categoryId = parseInt(e.value);
     const subCategory = categories?.data?.categories.find(
       (c: any) => c.id === categoryId
     );
-    setSubCategories(subCategory?.children);
+
+    setTimeout(() => {
+      setSubCategories(subCategory?.children || null);
+      setIsLoading(false);
+    }, 1000);
+
   };
 
   return (
     <form onSubmit={(e) => handleFormSubmit(e)} className="space-y-4">
       <p>Try Select Client</p>
-
       <Select
         name={"category"}
         onChange={(e) => {
-          setSubCategories([]);
-          handelChangeGetData(e);
+          setSubCategories(null);
+          handelCategoriesChange(e);
         }}
         options={convertOptionsToDropdownOptions(categories.data.categories)}
         placeholder={`اختر تصنيف`}
@@ -94,12 +163,18 @@ const Form = ({ categories }: Props) => {
 
       {/* Sub Categories */}
 
-      {subCategories.length > 0 && (
+      {subCategories && (
         <Select
           name={"subCategory"}
           onChange={(e) => {
             setIsLoading(true);
             getSubCategoryProperties(e);
+            if (e === null) {
+              setSubCategories(null);
+              setSubCategoryProperties(null);
+              setIsLoading(false);
+              return;
+            }
           }}
           options={convertOptionsToDropdownOptions(subCategories)}
           placeholder={`اختر تصنيف فرعي`}
@@ -115,6 +190,10 @@ const Form = ({ categories }: Props) => {
         <div key={cat?.slug}>
           <Select
             name={cat?.slug}
+            onChange={(e) => {
+              const type = cat?.slug;
+              handleSubCategoryPropertiesChange(e, type);
+            }}
             options={convertOptionsToDropdownOptions(cat?.options)}
             placeholder={cat?.name}
             isClearable
@@ -122,55 +201,13 @@ const Form = ({ categories }: Props) => {
         </div>
       ))}
 
-      {/* Categories */}
-      {/* 
-      <SearchableDropdownMenu
-        options={categories.data.categories}
-        placeholder="التصنيفات الرئيسية"
-        type="category"
-      /> */}
-
-      {/* Sub Categories */}
-      {/* <SearchableDropdownMenu
-        options={subCategory?.children}
-        placeholder="التصنيفات الفرعية"
-        type="subCategory"
-      /> */}
-
-      {/* Properties */}
-      {/* {subCategoryProperties?.data.map((cat: any) => (
-        <div key={cat?.slug}>
-          <SearchableDropdownMenu
-            options={cat?.options}
-            placeholder={cat?.name}
-            type={cat?.slug}
-            multi={cat.slug !== "brand"}
-          />
-
-          {cat.slug === "brand" && models && (
-            <SearchableDropdownMenu
-              options={models?.data[0]?.options}
-              placeholder="الموديل"
-              type="model"
-            />
-          )}
-
-          {cat.slug === "brand" && types !== null && (
-            <SearchableDropdownMenu
-              options={types?.data[0]?.options}
-              placeholder="النوع"
-              type={types?.data[0]?.slug}
-            />
-          )}
-        </div>
-      ))} */}
-
       <button
         type="submit"
         className="w-full my-4 bg-black text-white  font-light py-4 px-6 "
       >
         بحـث
       </button>
+
     </form>
   );
 };
